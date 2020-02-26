@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "Anne",
   "license": "ISC",
@@ -22,5 +23,8 @@
     "express": "^4.17.1",
     "mongodb": "^3.5.4",
     "mongoose": "^5.9.2"
+  },
+  "engines": {
+    "node": "12.x"
   }
 }
