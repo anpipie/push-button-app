@@ -15,12 +15,6 @@ counterSchema.statics.addCounter = async function (counter) {
   }
 }
 
-// not used !!
-counterSchema.statics.listCounters = async function () {
-  const list = await this.find()
-  return list
-}
-
 counterSchema.statics.getValue = async function (counterName) {
   try {
     const value = await this.find({ name: counterName })
@@ -31,11 +25,15 @@ counterSchema.statics.getValue = async function (counterName) {
 }
 
 counterSchema.statics.getAndIncrValue = async function (counterName, addValue) {
-  const value = await this.findOneAndUpdate(
-    { name: counterName },
-    { $inc: { value: addValue } }
-  )
-  return value
+  try {
+    const value = await this.findOneAndUpdate(
+      { name: counterName },
+      { $inc: { value: addValue } }
+    )
+    return value
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const Counter = mongoose.model('Counter', counterSchema)

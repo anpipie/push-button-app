@@ -5,9 +5,9 @@ const app = express()
 const cors = require('cors')
 app.use(cors())
 
-// counter storage: document in MongoDB database
+// ******** Counter *********
 
-// settings for counter storage:
+// Counter name and value in database
 const counterName = 'pushButtonCounter'
 const initialCounterValue = 0
 
@@ -42,7 +42,7 @@ const getAndAddCounterValue = async function () {
   }
 }
 
-// Game play result functions :
+// ******** Game play result functions **********
 
 const countClicksToWin = function (counterValue) {
   return 10 - (counterValue % 10)
@@ -60,7 +60,7 @@ const checkPointsWon = function (counterValue) {
   }
 }
 
-// Routes
+// *************** Routes ******************
 // Future improvement idea: limit the number of requests/time unit
 
 app.put('/play', async (req, res) => {
@@ -81,16 +81,12 @@ testIfCounterExists().then((counterExists) => {
     createCounterStorage()
   }
 })
-// getAndAddCounterValue().then((value) => console.log(value))
 
-/* if (process.env.NODE_ENV === 'production') {*/
 app.use(express.static('client/build'))
 
 const path = require('path')
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 })
-
-//res.sendFile(path.join(__dirname, '../client/build/index.html'))
 
 const server = app.listen(port, () => console.log(`Listening on port ${port}`))
