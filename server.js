@@ -44,21 +44,8 @@ const getAndAddCounterValue = async function () {
 
 // ******** Game play result functions **********
 
-const countClicksToWin = function (counterValue) {
-  return 10 - (counterValue % 10)
-}
-
-const checkPointsWon = function (counterValue) {
-  if (counterValue % 500 === 0) {
-    return 250
-  } else if (counterValue % 100 === 0) {
-    return 40
-  } else if (counterValue % 10 === 0) {
-    return 5
-  } else {
-    return 0
-  }
-}
+const { getGameResult } = require('./game')
+const { getInitialPlayerPoints } = require('./game')
 
 // *************** Routes ******************
 // Future improvement idea: limit the number of requests/time unit
@@ -67,9 +54,17 @@ app.put('/play', async (req, res) => {
   try {
     let counterValue = await getAndAddCounterValue()
     counterValue++
-    const clicks = countClicksToWin(counterValue)
-    const points = checkPointsWon(counterValue)
-    res.json({ 'clicks': clicks, 'points': points })
+    const result = getGameResult(counterValue)
+    res.json(result)
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+app.get('/initvalue', async (req, res) => {
+  try {
+    const initialPlayerPoints = getInitialPlayerPoints()
+    res.json({ init: initialPlayerPoints })
   } catch (err) {
     console.log(err)
   }

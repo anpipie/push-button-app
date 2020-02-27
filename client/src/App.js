@@ -1,29 +1,7 @@
 /* import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.css'; */
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App; */
 import React, { Component } from "react";
 
 class App extends Component {
@@ -31,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalPoints: 20,
+      totalPoints: 0,
       gameOver: false,
       message: '',
       clicks: 'muutaman'
@@ -47,8 +25,20 @@ class App extends Component {
         gameOver: false 
       })
     } else {
-      this.setState({ totalPoints: 20 })
+      this.setInitialPoints()
     }
+  }
+
+  // gets initial points from server
+  setInitialPoints = async () => {
+    const url = '/initvalue'
+    const response = await fetch(url)
+    const body = await response.json()
+    if (response.status !== 200) {
+      throw Error(body.message)
+    }
+    const initialPoints = body.init
+    this.setState({ totalPoints: initialPoints })
   }
 
   savePointsLocally = () => {
@@ -65,16 +55,16 @@ class App extends Component {
     }
   }
 
-  handleReplayClick = () => {
+  handleReplayClick = async () => {
+    this.setInitialPoints()
     this.setState({ 
       gameOver: false,
-      totalPoints: 20,
       message: '' 
     })
   }
 
   handleClick = async () => {
-    // get response from backend
+    // get play result from backend
     const url = '/play'
     const response = await fetch(url, {
       method: 'PUT'
@@ -87,12 +77,13 @@ class App extends Component {
     // update points, clicks and messages
     const pointsAwarded = body.points
     const clicksToNext = body.clicks
-    const newTotalPoints = this.state.totalPoints + pointsAwarded - 1 // add variable
+    const pointsWon = body.won
+    const newTotalPoints = this.state.totalPoints + pointsAwarded
 
     this.setState({ 
       totalPoints: newTotalPoints,
       clicks: clicksToNext,
-      message : (pointsAwarded === 0) ? 'Ei voittoa.' : `Jee, voitit ${pointsAwarded} pistettä!`
+      message : (pointsWon === 0) ? 'Ei voittoa.' : `Jee, voitit ${pointsWon} pistettä!`
      })
      
     this.savePointsLocally()
