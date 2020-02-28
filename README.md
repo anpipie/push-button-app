@@ -5,7 +5,7 @@ The app is now up and running at: https://push-button-app.herokuapp.com/
 
 ## Description
 This is a simple click the button game app (with no change of actually winning - so save your clicks!).
-Players click the button to gain more points. Each click costs point(s). Every click is counted by the server and every n:th click is awarded with points. Note: Server counts the total amount of clicks, not clicks by an individual player. After a click player gets tips of how many clicks are required to the next winning.
+Players click the button to gain more points. Each click costs point(s). Every click is counted by the server and every n:th click is awarded with points. Note: Server counts the total amount of clicks, not clicks by an individual player. After a click player gets a tips of how many clicks are required to the next winning.
 
 ### App overview
 * MongoDB - database
@@ -29,7 +29,8 @@ Check also /client/README.md file, which explains how to work with the Create Re
 ## Credits
 * The game logics are based on Vincit summer job challenge. Description in Finnish: https://koodarijahti.fi/Ennakkotehtava_2020_Painikepeli.pdf
 * I could have not created this app without the numerous tutorials available on web. Kudos to all those people sharing their expertise.
+* UI background image by Gerd Altmann / Pixabay
 
 ## Updates
 * 27/2/2020 gameplay logics (awarding points to player) are now separated into game.js 
-* 28/2/2020 Edited the UI. As a result this Push-Button-game evelved into Job-Hunt-game ;)
+* 28/2/2020 Edited the UI. As a result this Push-Button-game evolved into Job-Hunt-game ;)
