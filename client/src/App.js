@@ -1,8 +1,9 @@
-/* import React from 'react';
-import logo from './logo.svg';
-import './App.css'; */
-
 import React, { Component } from "react";
+
+import RoundContainer from './components/RoundContainer';
+import MessageContainer from './components/MessageContainer';
+import ClicksMessageContainer from './components/ClicksMessageContainer';
+import Button from './components/Button';
 
 class App extends Component {
 
@@ -10,14 +11,17 @@ class App extends Component {
     super(props);
     this.state = {
       totalPoints: 0,
+      pointsWon: '',
       gameOver: false,
-      message: '',
+      message: 'Työpaikkajahti alkaa!',
       clicks: 'muutaman'
     }
   }
 
+  // ********* points initial setting and saving ***********
+
   componentDidMount() {
-    // initialize points
+    // initialise points
     const localPoints = localStorage.getItem('points')
     if (localPoints !== null && localPoints > 0) {
       this.setState({ 
@@ -45,15 +49,7 @@ class App extends Component {
     localStorage.setItem('points', this.state.totalPoints)
   }
 
-  showReplayButton = () => {
-    if (this.state.gameOver) {
-      return (
-        <button onClick={ this.handleReplayClick }>
-          Aloita uusi peli
-        </button>
-      )
-    }
-  }
+  // ********** click event handlers *************
 
   handleReplayClick = async () => {
     this.setInitialPoints()
@@ -77,13 +73,13 @@ class App extends Component {
     // update points, clicks and messages
     const pointsAwarded = body.points
     const clicksToNext = body.clicks
-    const pointsWon = body.won
+    const newPointsWon = body.won
     const newTotalPoints = this.state.totalPoints + pointsAwarded
-
     this.setState({ 
       totalPoints: newTotalPoints,
       clicks: clicksToNext,
-      message : (pointsWon === 0) ? 'Ei voittoa.' : `Jee, voitit ${pointsWon} pistettä!`
+      pointsWon: '+' + newPointsWon,
+      message : (newPointsWon === 0) ? 'Tällä kertaa valintamme ei kohdistunut sinuun.' : 'Jee, kutsu haastatteluun! Sait lisää puhtia.'
      })
      
     this.savePointsLocally()
@@ -92,32 +88,43 @@ class App extends Component {
     if (this.state.totalPoints <= 0) {
       this.setState({ 
         gameOver: true,
-        message: 'Peli loppui!'
+        message: 'Puhti loppu. Peli päättyi.'
       })  
     }
   }
 
   render() {
     return (
-    <div>
-      <h1>Painikepeli</h1>
-      <div> 
-        Pisteet: {this.state.totalPoints}
-      </div>
-      <div>
-        Seuraava voitto on vain {this.state.clicks} painalluksen päässä!
-      </div>
-      <div>
-        <button 
-          onClick = {this.handleClick}
-          disabled = {this.state.gameOver}>
-            Pelaa
-        </button>
-        {this.state.message}
-      </div>
+    <div className='main-container'>
 
-      <div>
-          {this.showReplayButton()}
+      <div className='top-bar'></div>
+      
+      <RoundContainer 
+        title1='puhti'
+        title2={this.state.totalPoints}
+        title3={this.state.pointsWon}
+      />
+      <MessageContainer
+        message={this.state.message}
+        className='result-message-container'
+      />
+
+      <ClicksMessageContainer
+        className='clicks-message-container'
+        middleText={this.state.clicks}
+      />
+
+      <div className='buttons-container'>
+        <Button 
+          eventHandler={this.handleClick}
+          disabled={this.state.gameOver}
+          text='Pelaa'
+        />
+        { this.state.gameOver ? <Button
+          eventHandler={this.handleReplayClick}
+          text='Aloita uusi peli'
+          className='replay-button'
+        /> : null}
       </div>
 
     </div> 
