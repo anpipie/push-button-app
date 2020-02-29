@@ -2,59 +2,35 @@ const port = process.env.PORT || 8080
 const express = require('express')
 const app = express()
 
+const rateLimit = require('express-rate-limit')
+const playLimiter = rateLimit({
+  windowMs: 60 * 1000, // 60s
+  max: 240,
+  message: 'Klikkausnopeutesi on epäinhimillinen, otahan pieni tauko.'
+})
+app.use('/play', playLimiter) // limits the number of requests to '/play'
+
 const cors = require('cors')
 app.use(cors())
 
-// ******** Counter *********
+// *************** Counter ****************
 
-// Counter name and value in database
-const counterName = 'pushButtonCounter'
-const initialCounterValue = 0
+const { testIfCounterExists } = require('./gameCounter')
+const { createCounterStorage } = require('./gameCounter')
+const { getAndIncrCounterValue } = require('./gameCounter')
 
-require('./db')
+// ****** Game play result functions *******
 
-const Counter = require('./models/counter')
+const { getPlayResult } = require('./gameResult')
+const { getInitialPlayerPoints } = require('./gameResult')
 
-const createCounterStorage = async function () {
-  const initialData = {
-    name: counterName,
-    value: initialCounterValue
-  }
-  await Counter.addCounter(initialData)
-}
-
-const testIfCounterExists = async function () {
-  const counterData = await Counter.getValue(counterName)
-  if (typeof counterData === 'undefined' || counterData.length <= 0) {
-    return false
-  } else {
-    return true
-  }
-}
-
-const getAndAddCounterValue = async function () {
-  try {
-    const counterData = await Counter.getAndIncrValue('pushButtonCounter', 1)
-    const currentValue = await counterData.value // current value = value before incrementing
-    return currentValue
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-// ******** Game play result functions **********
-
-const { getGameResult } = require('./game')
-const { getInitialPlayerPoints } = require('./game')
-
-// *************** Routes ******************
-// Future improvement idea: limit the number of requests/time unit
+// *************** Routes *****************
 
 app.put('/play', async (req, res) => {
   try {
-    let counterValue = await getAndAddCounterValue()
+    let counterValue = await getAndIncrCounterValue()
     counterValue++
-    const result = getGameResult(counterValue)
+    const result = getPlayResult(counterValue)
     res.json(result)
   } catch (err) {
     console.log(err)
