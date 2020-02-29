@@ -10,7 +10,6 @@ const playLimiter = rateLimit({
   max: 240
 })
 app.use('/play', playLimiter) // limits the number of requests to '/play'
-app.enable('trust proxy') // needed for Heroku
 
 // cors
 

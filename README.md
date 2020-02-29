@@ -32,5 +32,6 @@ Check also /client/README.md file, which explains how to work with the Create Re
 * UI background image by Gerd Altmann / Pixabay
 
 ## Updates
-* 27/2/2020 gameplay logics (awarding points to player) are now separated into game.js 
+* 27/2/2020 gameplay logics (awarding points to player) are now separated into gameResults.js 
 * 28/2/2020 Edited the UI. As a result this Push-Button-game evolved into Job-Hunt-game ;)
+* 29/2/2020 Counter functions are now in gameCounter.js. Added rate limiting for PUT requests.

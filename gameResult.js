@@ -1,42 +1,42 @@
 // ***** Setup for game points *******
 //
-// ** pointsToWin: Points awarded when win. Values must be set to the array
-// from largest number to the smallest.
-// ** counterValuesForWin: Counter values that give win. Values must be set
-// to the array in order that corresponds the points in pointsToWin.
+// ** valuesAndPoints: Counter values and the respective points awarded
 // ** initialPlayerPoints: Points player gets when starting the game
 // ** costOfPlaying: Points player looses per click
 //
 // Example:
-// Winnings are 1 and 50 points: pointsToWin = [50, 1]
-// 50 points is won by every 10th counter value, 1 point every 2nd: counterValueForWin = [10, 2]
+// Every 5th wins 2 points and every 10th wins 7 points: valuesAndPoints = { 5: 2, 10: 7 }
 // Player starts with 10 points: initialPlayerPoints = 10
 
-const pointsToWin = [250, 40, 5]
-const counterValuesForWin = [500, 100, 10]
+const valuesAndPoints = {
+  500: 250,
+  100: 40,
+  10: 5
+}
 const initialPlayerPoints = 20
+
+// don't change costOfPlaying without adjusting also the condition for 'game over' in the client side!!
 const costOfPlaying = 1
 
 // *********** game play result functions  *************
 
 const countClicksToWin = (counterValue) => {
   const clicksToWin = []
-  for (let i = 0; i < counterValuesForWin.length; i++) {
-    const clicks = counterValuesForWin[i] - (counterValue % counterValuesForWin[i])
+  for (const value in valuesAndPoints) {
+    const clicks = value - (counterValue % value)
     clicksToWin.push(clicks)
   }
-  return Math.min(...clicksToWin)
+  return Math.min(...clicksToWin) // smallest number of clicks to next win
 }
 
 const checkPointsWon = (counterValue) => {
-  let pointsWon = 0
-  for (let i = 0; i < pointsToWin.length; i++) {
-    if (counterValue % counterValuesForWin[i] === 0) {
-      pointsWon = pointsToWin[i]
-      return pointsWon
+  const pointsWon = [0]
+  for (const value in valuesAndPoints) {
+    if (counterValue % (value * 1) === 0) {
+      pointsWon.push(valuesAndPoints[value])
     }
   }
-  return pointsWon
+  return Math.max(...pointsWon) // only the highest number of points is awarded if there are multiple wins
 }
 
 // ******* return game play results ********
