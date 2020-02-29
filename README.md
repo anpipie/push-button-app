@@ -22,7 +22,7 @@ This app is ready to deploy.
 To install dependencies run 'npm install'
 Check also /client/README.md file, which explains how to work with the Create React App.
 
-### Environmental variables (things you need to set)
+### Environment variables (things you need to set)
 * PORT - server.js
 * ATLAS_URI - db.js - your MongoDB database uri
 
