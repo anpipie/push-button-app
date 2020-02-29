@@ -2,13 +2,18 @@ const port = process.env.PORT || 8080
 const express = require('express')
 const app = express()
 
+// set rate limit
+
 const rateLimit = require('express-rate-limit')
 const playLimiter = rateLimit({
   windowMs: 60 * 1000, // 60s
   max: 2,//240,
-  message: 'Klikkausnopeutesi on epäinhimillinen, otahan pieni tauko.'
+  message: 'Klikkausnopeutesi on yli-inhimillinen, otahan pieni tauko.'
 })
 app.use('/play', playLimiter) // limits the number of requests to '/play'
+app.enable('trust proxy') // needed for Heroku deployment
+
+// cors
 
 const cors = require('cors')
 app.use(cors())
