@@ -8,10 +8,9 @@ const rateLimit = require('express-rate-limit')
 const playLimiter = rateLimit({
   windowMs: 60 * 1000, // 60s
   max: 2,//240,
-  message: 'Klikkausnopeutesi on yli-inhimillinen, otahan pieni tauko.'
 })
 app.use('/play', playLimiter) // limits the number of requests to '/play'
-app.enable('trust proxy') // needed for Heroku deployment
+//app.enable('trust proxy') // needed for Heroku deployment
 
 // cors
 
