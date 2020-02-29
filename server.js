@@ -7,10 +7,10 @@ const app = express()
 const rateLimit = require('express-rate-limit')
 const playLimiter = rateLimit({
   windowMs: 60 * 1000, // 60s
-  max: 2,//240,
+  max: 240
 })
 app.use('/play', playLimiter) // limits the number of requests to '/play'
-//app.enable('trust proxy') // needed for Heroku deployment
+app.enable('trust proxy') // needed for Heroku
 
 // cors
 
