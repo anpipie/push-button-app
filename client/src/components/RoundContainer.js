@@ -4,9 +4,9 @@ class RoundContainer extends React.Component {
   render() {
     return (
     <div className='round'>
-      <div className='round-top-title'>{this.props.title1}</div>
-      <div className='round-middle-title'>{this.props.title2}</div>
-      <div className='round-bottom-title'>{this.props.title3}</div>
+      <div className='round-top-title'>{this.props.titleTop}</div>
+      <div className='round-middle-title'>{this.props.titleMiddle}</div>
+      <div className='round-bottom-title'>{this.props.titleBottom}</div>
     </div>
     )
   }

@@ -100,9 +100,9 @@ class App extends Component {
       <div className='top-bar'></div>
       
       <RoundContainer 
-        title1='puhti'
-        title2={this.state.totalPoints}
-        title3={this.state.pointsWon}
+        titleTop='puhti'
+        titleMiddle={this.state.totalPoints}
+        titleBottom={this.state.pointsWon}
       />
       <MessageContainer
         message={this.state.message}
