@@ -119,6 +119,7 @@ class App extends Component {
           eventHandler={this.handleClick}
           disabled={this.state.gameOver}
           text='Lähetä hakemus'
+          className='play-button'
         />
         { this.state.gameOver ? <Button
           eventHandler={this.handleReplayClick}
