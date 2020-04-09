@@ -27,7 +27,7 @@ button {
 
 .play-button {
   /* Disable double tap zoom */
-  touch-action: manipulate;
+  touch-action: manipulation;
 }
 
 button:hover {background-color: #283655}
